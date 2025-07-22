@@ -1,0 +1,109 @@
+<!--<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">-->
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+    <div th:if="${likeError}" class="alert alert-warning" th:text="${likeError}"></div>
+    <!-- 글 -->
+    <h2 class="border-bottom py-2" th:text="${postDto.title}"></h2>
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text" style="white-space: pre-line;" th:text="${postDto.content}"></div>
+            <div class="d-flex justify-content-end">
+                <div th:if="${postDto.lastModifiedDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">modified at</div>
+                    <div th:text="${#temporals.format(postDto.lastModifiedDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+                <div class="badge bg-light text-dark p-2 text-start">
+                    <div class="mb-2">
+                        <span th:if="${postDto.username != null}" th:text="${postDto.username}"></span>
+                    </div>
+                    <div th:text="${#temporals.format(postDto.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+            </div>
+            <div class="my-3">
+                <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                   th:data-uri="@{|/post/like/${postDto.id}|}">
+                    추천
+                    <span class="badge rounded-pill bg-success" th:text="${postDto.likesCount}"></span>
+                </a>
+                <a th:href="@{|/post/modify/${postDto.id}|}" class="btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${postDto.username != null and #authentication.getPrincipal().getUsername() == postDto.username}"
+                   th:text="수정"></a>
+                <a href="javascript:void(0);" th:data-uri="@{|/post/delete/${postDto.id}|}"
+                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                   th:if="${postDto.username != null and #authentication.getPrincipal().getUsername() == postDto.username}"
+                   th:text="삭제"></a>
+            </div>
+        </div>
+    </div>
+    <!-- 댓글의 갯수 표시 -->
+    <h5 class="border-bottom my-3 py-2"
+        th:text="|${#lists.size(postDto.commentDtoList)}개의 답변이 있습니다.|"></h5>
+    <!-- 댓글 반복 시작 -->
+    <div class="card my-3" th:each="commentDto : ${postDto.commentDtoList}">
+        <a th:id="|commentDto_${commentDto.id}|"></a>
+        <div class="card-body">
+            <div class="card-text" style="white-space: pre-line;" th:text="${commentDto.content}"></div>
+            <div class="d-flex justify-content-end">
+                <div th:if="${commentDto.lastModifiedDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">modified at</div>
+                    <div th:text="${#temporals.format(commentDto.lastModifiedDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+                <div class="badge bg-light text-dark p-2 text-start">
+                    <div class="mb-2">
+                        <span th:if="${commentDto.username != null}" th:text="${commentDto.username}"></span>
+                    </div>
+                    <div th:text="${#temporals.format(commentDto.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+            </div>
+            <div class="my-3">
+                <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                   th:data-uri="@{|/comment/like/${commentDto.id}|}">
+                    추천
+                    <span class="badge rounded-pill bg-success" th:text="${commentDto.likesCount}"></span>
+                </a>
+                <a th:href="@{|/comment/modify/${commentDto.id}|}" class="btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${commentDto.username != null and #authentication.getPrincipal().getUsername() == commentDto.username}"
+                   th:text="수정"></a>
+                <a href="javascript:void(0);" th:data-uri="@{|/comment/delete/${commentDto.id}|}"
+                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                   th:if="${commentDto.username != null and #authentication.getPrincipal().getUsername() == commentDto.username}"
+                   th:text="삭제"></a>
+            </div>
+        </div>
+    </div>
+    <!-- 댓글 반복 끝  -->
+    <!-- 댓글 작성 -->
+    <form th:action="@{|/comment/create/${postDto.id}|}" th:object="${commentRequestDto}" method="post" class="my-3">
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+        <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control" rows="10"></textarea>
+        <textarea sec:authorize="isAuthenticated()" th:field="*{content}" class="form-control" rows="10"></textarea>
+        <input type="submit" value="댓글등록" class="btn btn-primary my-2">
+    </form>
+</div>
+<script layout:fragment="script" type='text/javascript'>
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+    const recommend_elements = document.getElementsByClassName("recommend");
+    Array.from(recommend_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 추천하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+
+    // 👍 추천 실패 메시지 처리
+    const likeError = /*[[${likeError}]]*/ null;
+    if (likeError !== null && likeError !== 'null') {
+        alert(likeError);
+    }
+</script>
+</html>
