@@ -26,13 +26,13 @@ public class PostApiController {
 
     @GetMapping("/list")
     public ResponseEntity<Page<PostResponseDto>> list(int page, String keyword) {
-        System.out.println("/api/post/list called.");
+//        System.out.println("/api/post/list called.");
         return ResponseEntity.ok(postService.getList(page, keyword));
     }
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<PostResponseDto> detail(@PathVariable("id") UUID id) {
-        System.out.println("/api/post/detail called.");
+//        System.out.println("/api/post/detail called.");
         return ResponseEntity.ok(postService.getPostDto(id));
     }
 

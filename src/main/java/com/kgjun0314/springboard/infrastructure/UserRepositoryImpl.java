@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<SiteUser> findByUsername(String username) {
-        System.out.println("UserRepositoryImpl.findByUsername");
+//        System.out.println("UserRepositoryImpl.findByUsername");
         return userRepository.findByUsername(username);
     }
 }

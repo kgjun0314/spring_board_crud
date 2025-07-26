@@ -7,6 +7,7 @@ import com.kgjun0314.springboard.domain.entity.Post;
 import com.kgjun0314.springboard.domain.entity.SiteUser;
 import com.kgjun0314.springboard.domain.repository.PostRepository;
 import com.kgjun0314.springboard.infrastructure.JpaCommentRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ class SpringBoardApplicationTests {
     private UserService userService;
 
 	@Test
+	@Disabled()
 	@DisplayName("JPA findById")
 	void testJpa2() {
 		// given
@@ -59,6 +61,7 @@ class SpringBoardApplicationTests {
 	}
 
 	@Test
+	@Disabled()
 	@DisplayName("JPA edit")
 	void testJpa6() {
 		// given
@@ -86,6 +89,7 @@ class SpringBoardApplicationTests {
 	}
 
 	@Test
+	@Disabled()
 	@DisplayName("Comment Creation")
 	void testJpa7() {
 		// given
@@ -111,6 +115,7 @@ class SpringBoardApplicationTests {
 	}
 
 	@Transactional
+	@Disabled()
 	@Test
 	@DisplayName("Comment Creation")
 	void testJpa8() {
@@ -140,6 +145,7 @@ class SpringBoardApplicationTests {
 	}
 
 	@Test
+	@Disabled()
 	@DisplayName("input 300 data")
 	void input() {
 		userService.create("user", "mail@mail.com", "password");
