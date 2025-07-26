@@ -39,7 +39,7 @@ public class PostApiController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public ResponseEntity<PostResponseDto> create(@RequestBody PostRequestDto postRequestDto, Principal principal) {
-        System.out.println("/api/post/create/ called.");
+//        System.out.println("/api/post/create/ called.");
         SiteUser siteUser = userService.getUser(principal.getName());
         PostResponseDto response = postService.create(postRequestDto.getTitle(), postRequestDto.getContent(), siteUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -48,7 +48,7 @@ public class PostApiController {
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/modify/{id}")
     public ResponseEntity<PostResponseDto> modify(@PathVariable("id") UUID id, @RequestBody PostRequestDto postRequestDto, Principal principal) {
-        System.out.println("/api/post/modify/" + id + " called.");
+//        System.out.println("/api/post/modify/" + id + " called.");
         Post post = postService.getPostEntity(id);
         if(!post.getSiteUser().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
@@ -60,7 +60,7 @@ public class PostApiController {
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id, Principal principal) {
-        System.out.println("/api/post/delete/" + id + " called.");
+//        System.out.println("/api/post/delete/" + id + " called.");
         Post post = postService.getPostEntity(id);
         if(!post.getSiteUser().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
@@ -72,7 +72,7 @@ public class PostApiController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/like/{id}")
     public ResponseEntity<PostResponseDto> like(@PathVariable("id") UUID id, Principal principal) {
-        System.out.println("/api/post/like/" + id + " called.");
+//        System.out.println("/api/post/like/" + id + " called.");
         Post post = postService.getPostEntity(id);
         SiteUser siteUser = userService.getUser(principal.getName());
         return ResponseEntity.ok(postService.like(post, siteUser));

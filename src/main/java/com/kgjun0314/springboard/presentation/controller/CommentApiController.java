@@ -28,14 +28,14 @@ public class CommentApiController {
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<CommentResponseDto> detail(@PathVariable("id") UUID id) {
-        System.out.println("api/comment/detail/" + id + " called.");
+//        System.out.println("api/comment/detail/" + id + " called.");
         return ResponseEntity.ok(commentService.getCommentDto(id));
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
     public ResponseEntity<CommentResponseDto> create(@PathVariable UUID id, @RequestBody CommentRequestDto commentRequestDto, Principal principal) {
-        System.out.println("api/comment/create/" + id + " called.");
+//        System.out.println("api/comment/create/" + id + " called.");
         Post post = postService.getPostEntity(id);
         SiteUser siteUser = userService.getUser(principal.getName());
         CommentResponseDto response = commentService.create(post, commentRequestDto.getContent(), siteUser);
@@ -45,7 +45,7 @@ public class CommentApiController {
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/modify/{id}")
     public ResponseEntity<CommentResponseDto> modify(@PathVariable("id") UUID id, @RequestBody CommentRequestDto commentRequestDto, Principal principal) {
-        System.out.println("api/comment/modify/" + id + " called.");
+//        System.out.println("api/comment/modify/" + id + " called.");
         Comment comment = commentService.getCommentEntity(id);
         if(!comment.getSiteUser().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
@@ -56,7 +56,7 @@ public class CommentApiController {
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id, Principal principal) {
-        System.out.println("api/comment/delete/" + id + " called.");
+//        System.out.println("api/comment/delete/" + id + " called.");
         Comment comment = commentService.getCommentEntity(id);
         if(!comment.getSiteUser().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
@@ -68,7 +68,7 @@ public class CommentApiController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/like/{id}")
     public ResponseEntity<CommentResponseDto> like(@PathVariable("id") UUID id, Principal principal) {
-        System.out.println("api/comment/like/" + id + " called.");
+//        System.out.println("api/comment/like/" + id + " called.");
         Comment comment = commentService.getCommentEntity(id);
         SiteUser siteUser = userService.getUser(principal.getName());
         return ResponseEntity.ok(commentService.like(comment, siteUser));
