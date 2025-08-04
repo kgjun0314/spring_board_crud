@@ -28,6 +28,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
             cd /home/ubuntu/spring_board_crud  # 실제 EC2의 경로로 변경
             git pull origin main
+            ./gradlew clean bootJar
             docker-compose -f docker-compose.prod.yml down
             docker-compose -f docker-compose.prod.yml up -d --build
           EOF
