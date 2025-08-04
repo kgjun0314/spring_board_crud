@@ -15,16 +15,14 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          cat << 'EOF' > ~/.ssh/id_rsa
-      ${{ secrets.KEY }}
-      EOF
+          echo "${{ secrets.KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
-            cd /home/ubuntu/spring_board_crud
+            cd /home/ubuntu/spring_board_crud  # 실제 EC2의 경로로 변경
             git pull origin main
             docker-compose down
             docker-compose up -d --build
