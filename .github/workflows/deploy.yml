@@ -22,7 +22,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
-            cd /home/ubuntu/spring_board  # 실제 EC2의 경로로 변경
+            cd /home/ubuntu/spring_board_crud
             git pull origin main
             docker-compose down
             docker-compose up -d --build
