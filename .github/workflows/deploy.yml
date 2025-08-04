@@ -15,7 +15,10 @@ jobs:
       - name: Set up SSH
         shell: bash
         run: |
-          mkdir -p $HOME/.ssh
+          echo "HOME is $HOME"
+          ls -ld $HOME
+          mkdir -p $HOME/.ssh || echo "mkdir failed"
+          ls -ld $HOME/.ssh || echo "dir check failed"
           echo "${{ secrets.KEY }}" > $HOME/.ssh/id_rsa
           chmod 600 $HOME/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.HOST }} >> $HOME/.ssh/known_hosts
