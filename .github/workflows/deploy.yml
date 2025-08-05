@@ -43,7 +43,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/id_rsa ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
-            cd /home/ubuntu/my_service
+            cd /home/ubuntu/spring_board_crud
             git pull origin main
             ./gradlew clean bootJar
             docker-compose -f docker-compose.prod.yml down
@@ -53,7 +53,7 @@ jobs:
       - name: Remove IP from Security Group
         if: always()
         run: |
-          aws ec2 revoke-security-group-ingress --group-name YOUR_SG_NAME --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+          aws ec2 revoke-security-group-ingress --group-name launch-wizard-1 --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
