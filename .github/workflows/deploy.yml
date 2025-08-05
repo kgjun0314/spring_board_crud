@@ -38,7 +38,7 @@ jobs:
           chmod 700 $HOME/.ssh
           printf "%s" "${{ secrets.KEY }}" > $HOME/.ssh/id_rsa
           chmod 600 $HOME/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.HOST }} >> $HOME/.ssh/known_hosts || true
+          ssh-keyscan -H ${{ secrets.HOST }} >> $HOME/.ssh/known_hosts
 
       - name: Deploy to EC2
         run: |
