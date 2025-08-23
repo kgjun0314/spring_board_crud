@@ -15,7 +15,8 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public Optional<Comment> findById(UUID id) {
-        return jpaCommentRepository.findByIdWithAllRelations(id);
+//        return jpaCommentRepository.findById(id);
+        return jpaCommentRepository.findByIdWithFetchJoin(id);
     }
 
     @Override

@@ -18,7 +18,8 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Optional<Post> findById(UUID id) {
-        return postRepository.findByIdWithAllRelations(id);
+//        return postRepository.findById(id);
+        return postRepository.findByIdWithFetchJoin(id);
     }
 
     @Override

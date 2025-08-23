@@ -26,7 +26,6 @@ public class PostResponseDto {
         username = post.getSiteUser().getUsername();
         commentDtoList = post.getCommentList()
                 .stream()
-                .distinct()
                 .map(CommentResponseDto::new)
                 .collect(Collectors.toList());
         likesCount = post.getLikes().size();
