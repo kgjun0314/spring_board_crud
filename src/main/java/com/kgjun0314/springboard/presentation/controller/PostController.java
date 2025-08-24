@@ -1,6 +1,5 @@
 package com.kgjun0314.springboard.presentation.controller;
 
-import com.kgjun0314.springboard.domain.entity.Post;
 import com.kgjun0314.springboard.presentation.dto.CommentRequestDto;
 import com.kgjun0314.springboard.presentation.dto.PostRequestDto;
 import com.kgjun0314.springboard.presentation.dto.PostResponseDto;
@@ -19,8 +18,6 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @RequiredArgsConstructor
