@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,5 +56,19 @@ public class UserService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
         }
         return new User(siteUser.getUsername(), siteUser.getPassword(), authorities);
+    }
+
+    @Transactional
+    public void saveRefreshToken(String username, String refreshToken) {
+        SiteUser user = getUser(username);
+        user.updateRefreshToken(refreshToken);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void invalidateRefreshToken(String username) {
+        SiteUser user = getUser(username);
+        user.updateRefreshToken(null);
+        userRepository.save(user);
     }
 }

@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +44,8 @@ public class UserApiController {
         final String accessToken = jwtUtil.generateAccessToken(userDetails);
         final String refreshToken = jwtUtil.generateRefreshToken(userDetails);
 
+        userService.saveRefreshToken(userDetails.getUsername(), refreshToken);
+
         Cookie refreshTokenCookie = cookieUtil.createCookie("refresh_token", refreshToken, jwtUtil.getRefreshTokenValidityInSeconds());
         response.addCookie(refreshTokenCookie);
 
@@ -50,6 +54,10 @@ public class UserApiController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        userService.invalidateRefreshToken(username);
+
         Cookie refreshTokenCookie = cookieUtil.deleteCookie("refresh_token");
         response.addCookie(refreshTokenCookie);
         return ResponseEntity.ok().build();

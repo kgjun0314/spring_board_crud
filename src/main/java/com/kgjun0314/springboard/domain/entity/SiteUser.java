@@ -31,4 +31,11 @@ public class SiteUser extends BaseTimeEntity{
 
     @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE)
     private Set<LikePost> likesPost;
+
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }
